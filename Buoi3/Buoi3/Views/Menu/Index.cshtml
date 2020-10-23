@@ -1,0 +1,43 @@
+﻿@model IEnumerable <Buoi3.Models.Menu>
+<style>
+    .name {
+        color: red;
+    }
+
+    .cap1:hover .cap2 {
+        display: block;
+    }
+
+    .cap2 {
+        display: none;
+    }
+
+        .cap2:hover .cap3 {
+            display: block;
+        }
+
+    .cap3 {
+        display: none;
+    }
+</style>
+    <ul class="nav navbar-nav cap1">
+        @foreach (var item in Model.Where (c => c.ParentID == null).OrderBy(c => c.SortOrder))
+        {
+            <li>
+                <a>@item.Name</a>
+                @RenderMenuItem(Model.ToList(), item)
+            </li>
+        }
+    </ul>
+@helper RenderMenuItem(List <Buoi3.Models.Menu> list, Buoi3.Models.Menu itemMenu)
+    {
+    <ul style="">
+        @foreach (var item in list.Where(c => c.ParentID == itemMenu.ID).OrderBy(c => c.SortOrder))
+        {
+            <li class="cap2">
+                <a>@item.Name</a>
+                <div class="cap3">  @RenderMenuItem(list, item)</div>
+            </li>
+        }
+    </ul>
+    }
